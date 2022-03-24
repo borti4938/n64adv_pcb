@@ -1,9 +1,61 @@
 # N64 Advanced (PCB)
 
+This repository contains all you need files to build your own DIY N64 Advanced board.
+Firmware is supplied in another repository.
 
+Please don't ask me for selling a modding.
+I either sell some prototypes on some forums marketplaces (which is very unlikely) or I don't have any of the boards.
+This is a complete DIY modding project.
+So everybody is on his own here.
+
+**WARNING:**
+This is an advanced DIY project if you do everything on your own. You need decent soldering skills.
+The FPGA has 0.5mm fine pitch with 144pins and one exposed pad below the IC, which has to be soldered to the PCB.
+Next to it the video DAC has also 0.5mm pin pitch on the board there are some SMD1206 resistor and ferrit bead arrays.
+However, there are some awesome shops out there selling the boards for a great price.
+
+## Checklist: How to build the project
+
+- Use PCB files (either [EAGLE-PCB design file](./n64adv.brd) or [Gerber files](./Gerber/)) to order your own PCB or simply use the [shared project(s) on OSHPark](https://oshpark.com/profiles/borti4938)
+- If you paln to use solder paste, do not forget to order a stencil for top and bottom, too
+- Source the components you need, e.g. from Mouser or Digikey.  
+  The BOM is available in [here](./doc/n64adv_BOM.xlsx).
+- If you want to use a assembly service (PCBA), you can use the mounting files ([top](./doc/n64adv.mnt) and [bottom](./doc/n64adv.mnb)) , too.
+- Wait for everything to arrive
+- Assemble your PCB if you haven't use a PCBA service
+- Set all jumpers
+- Flash the firmware to the serial flash device either in advanced (e.g. using the MiniPro) or after installation (e.g. using an Altera USB Blaster)
+  * In advanced:
+    * use the n64adv\__fpga-device_\_spi.bin binary, which can be found in the firmware repository
+    * If your programmer does not support the serial flash  device on the N64Adv board (currently IS25LP016D), you may setup the flash program for another compatible device (e.g. A25L016 @SOP8). You may have to uncheck _Check ID_ options (or similar)
+  * After installing:
+    * Use the JIC programming file named n64adv\__fpga-device_.jic
+    * Using the IntelFPGA programmer, JTAG chain is initialized by loading JIC file
+    * N64 needs to be powered for flashing
+    * Power cycle the N64 after flashing
 
 ## Assembly
 
+If you have all components available, you can start assembly your board.
+The documentation provides assembly sheets ([top](./doc/n64adv_assembly_sheet_top.pdf) and [bottom](./doc/n64adv_assembly_sheet_bot.pdf), which you can print out.
+Together with the [BOM](./doc/n64adv_BOM.xlsx) it is just a matter of time and effort to assembly everything.
+
+Note that the FPGA has an exposed pad, which needs a cood connection.
+Otherwise the FPGA will not boot at all.
+Preheat the FPGA with a hot air gun and solder the exposed pad from bottom if you do not use solder paste.
+If you only have your solder iron, apply heat from bottom.
+You have to be patient at this point as there are large GND planes around the FPGA.
+You may check the FPGA temperature with your finger on the top side (once it gets too hot to touch, you may stop for soldering for a brief moment).
+
+Using non-clean flux (rosin based) is obviously recommended.
+Eventhough it is "non-clean" I recommend cleaning everything afterwards (just for the visual finish).
+
+Please double check everything for shorts once you finished your work.
+Very important is that the power supply trace do not short to GND.
+- 3.3V against GND (e.g. at C1)
+- 2.5V against GND (e.g. at C702)
+- 1.2V against GND (e.g. at C121)
+- 5V against GND (e.g. at C2)
 
 ## Installation
 
@@ -177,12 +229,15 @@ Most selled kits comes with uncutted pins here, so there is a high risk.
 Another advantage is that you can you a mainboard screw to secure the modding board.
 
 If you do not have a 3D printer you can also mount the PCB using a M3 screw of length 10mm or 12mm, a set of washer and a nut.
+
 ![](./doc/img/Mount_PCB2HeatShield.jpg)
 
 If you want to use the heat sink shield as an additional secure GND connection you can also apply some solder to the mounting via.
+
 ![](./doc/img/Solder_PCBmounting_hole.jpg)
 
 If everything is mounted and secured, the PCB should sit like that.
+
 ![](./doc/img/PCB_at_HeatShield.jpg)
 
 
@@ -200,6 +255,7 @@ On my ealrier installs I used some wire marker.
 Bend the flex cables gently at the shaded areas.
 In that way you should be able to alling both flex cables at the N64 Advanced modding board.
 Solder the flex cables at their places.
+(Please note subsection 5.3 - CSYNC).
 
 ![](./doc/img/N64A_flex.jpg)
 
@@ -209,14 +265,39 @@ Connect an extra GND wire as shown in 5.3.
 
 Just connect every wire at its place.
 The silk screen shows you where everything goes to.
+(Please note subsection 5.3 - CSYNC).
 Note that the picture shows an older version of the N64 Advanced.
 Newer versions have reset and controller at the left hand side.
 
 ![](./doc/img/N64A_wires.jpg)
 
-Connect an extra GND wire as shown in 5.3.
+Connect an extra GND wire as shown in 5.4.
 
-#### Extra GND Wire
+#### 5.3 CSYNC
+
+You have the option to connect _/CS_ or _/CS (75ohm)_.
+What to prefere / to use depends on the modding board version you have.
+
+##### N64A_20200305 and later (with J33)
+
+Here, I recommend using _/CS (75ohm)_ except if you have a true TTL sink, which is usually not the case!
+In virtually 99% of all setups connecting the sync wire to _/CS (75ohm)_ is the way to go.
+
+On installations with the flex cables follows that you have to close SJ3 bottom on the flex.
+Please note the Jumper Setup section to correctly setup the sync level.
+
+##### N64A_20191005 and earlier (without J33)
+
+On these modding boards the connection depends on your wire setup.
+If you have a resistor in the sync wire inside of your cable, you have to use the TTL _/CS_ output.
+This also holds if you have a true TTL setup.
+If you have no components in your cable to further attenuate the sync level, you have to connect _/CS (75ohm)_.
+Otherwise you may harm your setup.
+
+On installations with the flex cables follows that you have to close either SJ3 top (_/CS_) or bottom (_/CS (75ohm)_).
+Never close both!
+
+#### 5.4 Extra GND Wire
 
 Connect an extra GND wire to the heat sink screw.
 This improves return path properies of the digital video lines.
@@ -226,6 +307,97 @@ This improves return path properies of the digital video lines.
 
 ## Jumper Setup
 
+**IMPORTANT NOTE**  
+Most jumpers are used as fallback if the software is unable to load a valid configuration from flash device U5.
+They were introduced on the modding board before a menu was implemented in the firmware.  
+The only exception is J1.2 - this jumper is still used to show the software whether the _Filter AddOn_ is installed or not.
+Note that the _Filter AddOn_ might be part of the flex cable.
+
+There are some jumpers spreaded over the PCB, namely _J1_, _J2_, _J3_, _J4_, _J5_ and _J6_.
+_J1 - J4_ have to parts, let's say _.1_ and _.2_, where _.1_ is marked with the _dot_ on the PCB.
+
+#### J1 (Filter AddOn)
+##### J1.1 
+- opened: output HSYNC and VSYNC for possible VGA output
+- closed: use filter addon
+
+##### J1.2
+- opened: use filter of the addon board
+- closed: bypass filter (actually filter is set to 95MHz cut-off which is way above the video signal content)
+
+#### J2 (RGB, RGsB, YPbPr)
+##### J2.1
+- opened: RGB output
+- closed: RGsB output (sync on green)
+
+##### J2.2
+- opened: RGB / RGsB output
+- closed: YPbPr output (beats J2.1)
+
+
+#### J3 (Scanline)
+##### J3.1/J3.2
+- opened / opened: 0%
+- opened / closed: 25%
+- closed / opened: 50%
+- closed / closed: 100%
+
+#### J33 (CSYNC level @ _/CS (75ohm)_ pad)
+
+- opened: appr. 1.87V @ 75ohm termination i.e. needs a resistor inside the sync wire further attenuating the signal. Designed to work for cables with 470 ohm resistor inside resulting in appr. 450mV @ 75ohm termination
+- closed: appr. 300mV @ 75ohm termination suitable for pass through wired cables at sync, works with standard TV / scaler setup
+
+#### J4 (Linemode)
+##### J4.1
+- opened: linedoubling of 240p/288p to 480p/576p
+- closed: no-linedoubling (beats J4.2)
+
+##### J4.2
+- opened: no bob de-interlace of 480i/576i
+- closed: bob de-interlace of 480i/576i to 480p/576p (J4.1 must be opened)
+
+#### J5
+_J5_ is the JTAG connector.
+
+#### J6 (_Outdated_; Power supply of analog outputs)
+The analog part can be power with **either** 3.3V **or** 5V. If you want to power this part of the PCB with 3.3V, close _J6_ and leave pad _5V_ unconnected. If you want to power this part with 5V, leave _J6_ opened and connect pad _5V_ to +5V power rail of the N64. **NEVER connect 5V and close J6.**
 
 ## Cable Setup
+
+| Signal | Pin MultiOut | Pin SCART | Ref. GND in SCART | Cinch Plug | Note |
+|:-------|:-------------|:----------|:------------------|:-----------|:-----|
+| Red / Pr | 1 | 15 | 13 | Red plug | Using a 220uF cap in series is possible |
+| Green / Y | 2 | 11 | 9 | Green plug | Using a 220uF cap in series is possible |
+| Blue / Pb | 4 | 7 | 5 | Blue plug | Using a 220uF cap in series is possible |
+| Sync | 3, 7 or 9 | 20 | 17 | _not needed_ | Pin: See installation, Cable: see notes below |
+| GND | 5, 6 | 4,5,9,13,17,18,21 | | Outer ring of each plug | Pin 21 @ SCART: outer shield |
+| +5V | 10 | 16 | 18 | _not needed_ | SCART: use a 180ohm resistor in series |
+| Audio left | 11 | 6 | 4 | Red plug | |
+| Audio right | 12 | 2 | 4 | White plug | |
+
+#### Notes on Sync:
+
+- I recommend using the 75ohm compatible csync output.
+  - Run a straight wire through your cable for sync if you have an earlier model (boards without J33).
+  - If you have a modding board with J33, you can select with J33 whether you have a series resistor in you cable (J33 open) or if you have a straightly wired sync connection (J33 closed).
+- If you use TTL sync output, you have to add an additional resistor in series in every case if you want to use the cable on a non-TTL setup (270ohm to 1.1kohm) to attenuate the signal for 75ohm terminationed sinks.
+
+#### RGB cables:
+
+- If you buy an RGB cable, buy a typical RGB cable for a NTSC SNES with sync on luma (MultiAV pin 7) or sync on csync (MultiAV pin 3).
+- If you bought a raw csync cable and if you use the 75ohm output, ...
+  - N64A_20191005 and earlier (without J33): remove / short the resistor which is possibly installed in the sync trace.
+  - N64A_20200305 and later (with J33): leave J33 open if you have a sync connection with a resistor inside your sync line, otherwise close J33.
+  
+#### PAL RGB cables (SNES PAL):
+
+- PAL RGB cable, i.e. a cable with additional 75ohm resistors to GND, are not supported out of the box.
+- You can support them if and only if you have the _Filter AddOn_.  
+  To support the cable, replace RN2 with a 39ohm resistor array or solder a second 75ohm resistor array on top of the existing one.
+
+#### RGsB / YPbPr Cables:
+
+With the given table you should be able to build your own component cable or to build an adapter (see pictures below)
+Unfortunately, there are no cables / adapter to bought.
+Only chance is to buy a Wii component cable and use a MultiOut adapter (SNES/N64/GC style to Wii style).
 
