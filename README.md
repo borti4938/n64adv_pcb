@@ -15,6 +15,19 @@ The FPGA has 0.5mm fine pitch with 144pins and one exposed pad below the IC, whi
 Next to it the video DAC has also 0.5mm pin pitch on the board there are some SMD1206 resistor and ferrit bead arrays.
 However, there are some awesome shops out there selling the boards for a great price.
 
+## Table of Contents
+
+- [Checklist](https://github.com/borti4938/n64adv_pcb#checklist-how-to-build-the-project)
+- [Assembly](https://github.com/borti4938/n64adv_pcb#assembly)
+- [Installation](https://github.com/borti4938/n64adv_pcb#installation)
+  - [1. Open the Console](https://github.com/borti4938/n64adv_pcb#1-open-the-console)
+  - [2. Optional Steps](https://github.com/borti4938/n64adv_pcb#2-optional-steps)
+  - [3. Solder Work](https://github.com/borti4938/n64adv_pcb#3-solder-work)
+  - [4. Mount the N64 Advanced Modding PCB](https://github.com/borti4938/n64adv_pcb#4-mount-the-n64-advanced-modding-pcb)
+  - [5. Finish the Work](https://github.com/borti4938/n64adv_pcb#5-finish-the-work)
+- [Jumper Setup](https://github.com/borti4938/n64adv_pcb#jumper-setup)
+- [Cable Setup](https://github.com/borti4938/n64adv_pcb#cable-setup)
+
 ## Checklist: How to build the project
 
 - Use PCB files (either [EAGLE-PCB design file](./n64adv.brd) or [Gerber files](./Gerber/)) to order your own PCB or simply use the [shared project(s) on OSHPark](https://oshpark.com/profiles/borti4938)
