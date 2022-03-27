@@ -1,4 +1,5 @@
-# N64 Advanced (PCB)
+N64 Advanced (PCB)
+---
 
 This repository contains all you need files to build your own DIY N64 Advanced board.
 Firmware is supplied in another repository.
@@ -33,6 +34,7 @@ However, there are some awesome shops out there selling the boards for a great p
     * Using the IntelFPGA programmer, JTAG chain is initialized by loading JIC file
     * N64 needs to be powered for flashing
     * Power cycle the N64 after flashing
+- If you want to go for a clean installation with custom made flexible PCBs, just visit the repository for add ons ([Flex PCB for the digital video interface](https://github.com/borti4938/n64rgb_project_misc/RCP2N64RGB), [Flex PCB for the analog video output](https://github.com/borti4938/n64rgb_project_misc/N64RGB2MoutFilter)
 
 ## Assembly
 
@@ -47,12 +49,15 @@ If you only have your solder iron, apply heat from bottom.
 You have to be patient at this point as there are large GND planes around the FPGA.
 You may check the FPGA temperature with your finger on the top side (once it gets too hot to touch, you may stop for soldering for a brief moment).
 
+If you populate J5, which is the JTAG connector, please short the pins such that they are flush at the bottom side.
+This reduces the risk to short on of these pins with the heat sink (where the PCB will be mounted).
+
 Using non-clean flux (rosin based) is obviously recommended.
 Eventhough it is "non-clean" I recommend cleaning everything afterwards (just for the visual finish).
 
 Please double check everything for shorts once you finished your work.
 Very important is that the power supply trace do not short to GND.
-- 3.3V against GND (e.g. at C1)
+- 3.3V against GND (e.g. at C1 and at C114)
 - 2.5V against GND (e.g. at C702)
 - 1.2V against GND (e.g. at C121)
 - 5V against GND (e.g. at C2)
@@ -129,7 +134,7 @@ Note that the picture shows older prototype version.
 
 ![](./doc/img/flex_cables.jpg)
 
-##### 3.1.1 Using the Flex Cable 
+##### 3.1.1 Digital inputs
 
 Start with the digital side:
 - Solder the RCP connector side to the RCP-NUS as shown
@@ -147,6 +152,7 @@ The flex will be routed over the MultiOut.
 
 ![](./doc/img/RCPNUSwFlex.jpg)
 
+##### 3.1.2 Analog outputs
 
 Next up is the analog video flex which will be connected to the MultiOut.
 Before you start here, make yourself clear where you want to route sync to.
@@ -156,7 +162,7 @@ This depends on whether you want to use sync on luma or sync on composite sync (
   - pin 3 (raw sync cable): usually unconnected. Only connected in earlier NTSC console (-CPU-01 to -CPU-03)
   - pin 7 (luma sync cable): usually connected. Search for a nearby resistor or trace back to the DENC-NUS or MAV-NUS and lift the luma pin. Remove the resistor or lift the pin at the DENC-NUS or MAV-NUS.
 - solder the flex on its place of the MultiOut
-- close **SJ1** from
+- close **SJ1** on the flex from
   - middle to 3 if using raw sync
   - middle to 7 if using luma sync
 - Note that it is also possible to connect sync pin 9 if you want to use a sync on composite video cable.
@@ -230,6 +236,7 @@ Most selled kits comes with uncutted pins here, so there is a high risk.
 Another advantage is that you can you a mainboard screw to secure the modding board.
 
 If you do not have a 3D printer you can also mount the PCB using a M3 screw of length 10mm or 12mm, a set of washer and a nut.
+Be careful with the JTAG connector **J5** and ensure that the  pins do not short to the heatsink!
 
 ![](./doc/img/Mount_PCB2HeatShield.jpg)
 
@@ -399,6 +406,6 @@ The analog part can be power with **either** 3.3V **or** 5V. If you want to powe
 #### RGsB / YPbPr Cables:
 
 With the given table you should be able to build your own component cable or to build an adapter (see pictures below)
-Unfortunately, there are no cables / adapter to bought.
+Unfortunately, there are no cables / adapter to buy.
 Only chance is to buy a Wii component cable and use a MultiOut adapter (SNES/N64/GC style to Wii style).
 
