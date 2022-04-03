@@ -245,6 +245,7 @@ There is a large via on the PCB where a M3 screw passes through.
 If you have a 3D printer at hand, [Consoles4You](https://twitter.com/Consoles4You/status/1402648032848531457) created a beautiful 3D bracket to make mounting extremely easy.
 File can be downloaded [here](https://t.co/0TzSATg8nK).
 A mirror of the files supplied in [this repository](./3d_mount_bracket) courtesy to Consoles4You.
+Consoles4You recommends on the 3D bracket that it has to **be printed in PETG or higher temp resistant material**, because PLA will deform and may cause a short.
 Main advantage is that you do not need to make sure that the JTAG connector does not short out at the heat sink.
 Most kits I see on shop pictures come with uncut pins here, so there is a high risk.
 Another advantage is that you can you a mainboard screw to secure the modding board.
